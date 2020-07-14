@@ -1,6 +1,6 @@
 /*
  * 1001. A-B
- * https://www.acmicpc.net/problem/1000
+ * https://www.acmicpc.net/problem/1001
  */
 
 import java.io.BufferedReader;
