@@ -9,13 +9,14 @@ import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main_14889 {
-	static int N, tt, ans;
-	static int[] idx, index, statSub;
+	static int N, half, idx, result;
+	static int[] team, pair, ans;
 	static int[][] stat;
 	
 	public static void main(String[] args) throws Exception {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(in.readLine());
+		half = N / 2;
 		stat = new int[N][N];
 		
 		for (int i = 0; i < N; i++) {
@@ -26,51 +27,54 @@ public class Main_14889 {
 			}
 		}
 		
-		int top = 1, bottom = 2;
-		for (int i = 0; i < N/2; i++) {
+		long top = 1, bottom = 2;
+		for (int i = 0; i < half; i++) {
 			top *= N - i;
 			bottom *= i + 1;
 		}
 		
-		tt = 0;
-		idx = new int[N/2];
-		index = new int[2];
-		statSub = new int[top/bottom];
+		team = new int[half];
+		pair = new int[2];
+		ans = new int[(int) (top/bottom)];
+		idx = 0;
+		
 		combi(0, 0);
 		
-		Arrays.sort(statSub);
-		
-		System.out.println(statSub[0]);
+		Arrays.sort(ans);
+		System.out.println(ans[0]);
 	}
 	
 	public static void combi(int i, int cnt) {
-		if (cnt == N/2) {
-			if (idx[0] == 0) {
-				statSub[tt] = pick(0, 0, 0);
-				tt++;
+		if (cnt == half) {
+			result = 0;
+			pick(0, 0);
+
+			if (team[0] == 0) {
+				ans[idx] = result;
+				idx++;
 			} else {
-				tt--;
-				statSub[tt] = Math.abs(pick(0, 0, 0) - statSub[tt]);
+				idx--;
+				ans[idx] = Math.abs(result - ans[idx]);
 			}
+			
 			return;
 		}
 		
 		for (; i < N; i++) {
-			idx[cnt] = i;
+			team[cnt] = i;
 			combi(i+1, cnt+1);
 		}
 	}
 	
-	public static int pick(int i, int cnt, int result) {
+	public static void pick(int i, int cnt) {
 		if (cnt == 2) {
-			return stat[index[0]][index[1]] + stat[index[1]][index[0]];
+			result += stat[pair[0]][pair[1]] + stat[pair[1]][pair[0]];
+			return;
 		}
 		
-		for (int len = N/2; i < len; i++) {
-			index[cnt] = idx[i];
-			result += pick(i+1, cnt+1, result);
+		for (; i < half; i++) {
+			pair[cnt] = team[i];
+			pick(i+1, cnt+1);
 		}
-		
-		return result;
 	}
 }
