@@ -15,16 +15,11 @@ public class Main_11052 {
 		
 		StringTokenizer st = new StringTokenizer(in.readLine(), " ");
 		for (int i = 1; i < N; i++) {
-			int tmp = Integer.parseInt(st.nextToken());
-			
-			if (i == 1) {
-				price[i] = tmp;
-				continue;
+			price[i] = Integer.parseInt(st.nextToken());
+
+			for (int j = 1; j < i; j++) {
+				price[i] = Math.max(price[i], price[j] + price[i-j]);
 			}
-			
-			price[i] = Math.max(tmp, price[i-1] + price[1]);
-			
-			if (i % 2 == 0) price[i] = Math.max(price[i], price[i/2] * 2); 
 		}
 		
 		System.out.println(price[N-1]);
