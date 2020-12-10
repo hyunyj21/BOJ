@@ -5,6 +5,7 @@
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
 
@@ -19,26 +20,30 @@ public class Main_1966 {
 			int N = Integer.parseInt(st.nextToken());
 			int M = Integer.parseInt(st.nextToken());
 			LinkedList<int[]> importance = new LinkedList<>();
+			LinkedList<Integer> max = new LinkedList<>();
 			
 			st = new StringTokenizer(in.readLine());
 			for (int i = 0; i < N; i++) {
-				importance.offer(new int[] {Integer.parseInt(st.nextToken()), i});
+				int tmp = Integer.parseInt(st.nextToken());
+				
+				importance.offer(new int[] {tmp, i});
+				max.offer(tmp);
 			}
+			
+			max.sort(Collections.reverseOrder());
 			
 			int cnt = 1;
 			while (true) {
-				int idx = 0, max = 0;
-				for (int i = 0, len = importance.size(); i < len; i++) {
-					if (importance.get(i)[0] > max) {
-						idx = i;
-						max = importance.get(i)[0];
-					}
+				int[] cur = importance.poll();
+				
+				if (cur[0] != max.get(0)) {
+					importance.offer(cur);
+					continue;
 				}
 				
-				if (importance.get(idx)[1] == M) break;
-
-				importance.remove(idx);
-				if (max != importance.get(0)[0]) importance.offer(importance.poll());
+				if (cur[1] == M) break;
+				
+				max.remove();
 				cnt++;
 			}
 			
