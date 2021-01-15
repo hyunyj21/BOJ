@@ -28,8 +28,15 @@ public class Main_1181 {
 			}
 		});
 		
+		String tmp = "";
+		
 		for (int i = 0; i < N; i++) {
-			sb.append(list.get(i)).append("\n");
+			String cur = list.get(i);
+			
+			if (tmp.equals(cur)) continue;
+			
+			sb.append(cur).append("\n");
+			tmp = cur;
 		}
 		
 		System.out.print(sb);
